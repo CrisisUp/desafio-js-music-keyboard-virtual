@@ -1,122 +1,285 @@
+/* ==========================================================================
+   STEINWAY SPIRIO - VIRTUAL PIANO DESIGN SYSTEM
+   Direção de Arte: Luxo Minimalista / Dark Gold
+   ========================================================================== */
+
+:root {
+  /* --- Paleta de Cores Primárias --- */
+  --piano-core: #0a0a0a;
+  --piano-accent: #1c1c1c;
+  --gold: #d4af37;
+  --felt-red: #8b0000;
+  --text-primary: #ffffff;
+  --text-muted: #888888;
+  
+  /* --- Sombras e Profundidade --- */
+  --key-shadow: 0 10px 20px rgba(0,0,0,0.6);
+  --shadow-container: 0 40px 100px rgba(0,0,0,0.9);
+  
+  /* --- Gradientes Premium --- */
+  --white-grad: linear-gradient(to bottom, #fff 0%, #f9f9f9 85%, #d1d1d1 100%);
+  --black-grad: linear-gradient(145deg, #222 0%, #050505 100%);
+  --gold-grad: linear-gradient(145deg, #d4af37, #b8962e);
+  --octave2-grad: linear-gradient(to bottom, #fff 0%, #f0f0f0 85%, #e2d1a0 100%);
+}
+
+/* ==========================================================================
+   BASE & LAYOUT
+   ========================================================================== */
+
 body {
+  margin: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: #e3f2fd;
-  color: #fff;
+  background: radial-gradient(circle, #222 0%, #000 100%);
+  font-family: 'Poppins', sans-serif;
+  color: var(--text-primary);
 }
 
 .container {
-  width: 780px;
+  width: 850px;
+  background-color: var(--piano-core);
+  padding: 50px;
   border-radius: 20px;
-  padding: 35px 40px;
-  background-color: black;
+  border: 1px solid #333;
+  box-shadow: var(--shadow-container);
 }
 
-.container header {
-  color: #b2b2b2;
+/* ==========================================================================
+   HEADER & CONTROLES (UI)
+   ========================================================================== */
+
+header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
+  margin-bottom: 50px;
+  padding-bottom: 25px;
+  border-bottom: 2px solid var(--piano-accent);
 }
 
 header h2 {
-  font-size: 1.6rem;
+  font-weight: 300;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  margin: 0;
 }
 
-header .column {
+.column {
   display: flex;
   align-items: center;
+  gap: 15px;
 }
 
-header .column span {
-  font-weight: 500;
-  margin-right: 15px;
-  font-size: 1.19rem;
+.column span {
+  font-size: 0.9rem;
+  color: var(--text-muted);
 }
 
-.volume-slider input {
-  accent-color: #fff;
-}
+/* --- Botões e Seletores --- */
 
-.keys-check input {
-  width: 60px;
-  height: 30px;
-  appearance: none;
-  border-radius: 30px;
-  background-color: #4b4b4b;
+select, .btn-spirio {
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  padding: 8px 15px;
+  border-radius: 4px;
+  font-family: inherit;
   cursor: pointer;
-  position: relative;
-}
-
-.keys-check input::before {
-  content: "";
-  height: 20px;
-  width: 20px;
-  background-color: #8c8c8c;
-  top: 50%;
-  left: 0.3rem;
-  border-radius: inherit;
-  position: absolute;
-  transform: translateY(-50%);
   transition: all 0.3s ease;
 }
 
-.keys-check input:checked::before {
-  left: 2.1rem;
-  background-color: #fff;
+.btn-spirio {
+  background: var(--gold-grad);
+  color: #000;
+  font-weight: bold;
+  border: none;
 }
+
+.btn-spirio:hover {
+  filter: brightness(1.2);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+}
+
+/* ==========================================================================
+   INPUTS CUSTOMIZADOS (CONTROLES PREMIUM)
+   ========================================================================== */
+
+/* --- Slider de Volume --- */
+
+#volume-slider {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 120px;
+  height: 4px;
+  background: #333;
+  border-radius: 5px;
+  outline: none;
+}
+
+#volume-slider::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  background: var(--gold);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 10px var(--gold);
+}
+
+/* --- Switch de Teclas (Checkbox) --- */
+
+#keys-check {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 50px;
+  height: 24px;
+  background: #333;
+  border-radius: 20px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.3s;
+  border: 1px solid var(--gold);
+}
+
+#keys-check::before {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background: var(--gold);
+  border-radius: 50%;
+  top: 3px;
+  left: 4px;
+  transition: 0.3s;
+  box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+#keys-check:checked { background: var(--gold); }
+#keys-check:checked::before { left: 26px; background: #fff; }
+
+/* ==========================================================================
+   VISUALIZADOR DE ÁUDIO (SPECTRUM)
+   ========================================================================== */
+
+.visualizer {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  margin-bottom: 40px;
+}
+
+.visualizer .bar {
+  width: 6px;
+  background: var(--gold);
+  border-radius: 3px;
+  opacity: 0.2;
+  height: 5px;
+  transition: height 0.05s ease;
+}
+
+.visualizer.playing .bar {
+  opacity: 1;
+  animation: spirio-pulse 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes spirio-pulse {
+  from { height: 5px; } 
+  to { height: 35px; }
+}
+
+/* ==========================================================================
+   PIANO KEYS (O CORAÇÃO DO INSTRUMENTO)
+   ========================================================================== */
 
 .piano-keys {
   display: flex;
-  margin-top: 40px;
-}
-.piano-keys .key {
-  cursor: pointer;
-  user-select: none;
+  justify-content: center;
   list-style: none;
-  color: #a2a2a2;
+  padding: 0;
+}
+
+.key {
   position: relative;
-  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.08s ease;
 }
 
-.piano-keys .white {
+/* --- Teclas Brancas --- */
+
+.key.white {
   width: 70px;
-  height: 230px;
-  border: 1px solid black;
-  border-radius: 8px;
-  background: linear-gradient(#fff 96%, #eee 4%);
+  height: 260px;
+  background: var(--white-grad);
+  border: 1px solid #000;
+  border-top: 6px solid var(--felt-red);
+  border-radius: 0 0 8px 8px;
+  box-shadow: var(--key-shadow);
+  z-index: 1;
 }
 
-.piano-keys .black {
-  width: 44px;
-  height: 140px;
+.key.white.active {
+  background: #e0e0e0;
+  transform: translateY(6px);
+  box-shadow: inset 0 8px 15px rgba(0,0,0,0.2);
+}
+
+/* --- Teclas Pretas --- */
+
+.key.black {
+  width: 46px;
+  height: 155px;
+  background: var(--black-grad);
+  margin: 0 -23px;
+  border-radius: 0 0 4px 4px;
+  box-shadow: 8px 8px 15px rgba(0,0,0,0.7);
   z-index: 2;
-  margin: 0 -22px 0 -22px;
-  border: 1px solid black;
-  border-radius: 0 0 5px 5px;
-  background: linear-gradient(#333, #000);
+  border: 1px solid #111;
 }
 
-.piano-keys span {
+.key.black.active {
+  background: #111;
+  transform: translateY(3px) scale(0.96);
+  box-shadow: inset 0 4px 8px rgba(255,255,255,0.1);
+}
+
+/* --- Identificação das Notas (Texto) --- */
+
+.key span {
   position: absolute;
-  bottom: 20px;
+  bottom: 25px;
   width: 100%;
   text-align: center;
-  font-size: 1.13rem;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+  pointer-events: none;
 }
 
-.piano-keys .white.active {
-  box-shadow: inset -5px 5px 20px rgba(0, 0, 0, 0.2);
-  background: linear-gradient(to bottom #fff 0%, #eee 100%);
+.key.black span {
+  bottom: 15px;
+  color: #fff;
+  font-size: 0.65rem;
 }
 
-.piano-keys .black.active {
-  box-shadow: inset -5px 5px 10px rgba(255, 255, 255, 0.1);
-  background: linear-gradient(to bottom #000, #434343);
+.piano-keys .key.hide span { display: none !important; }
+
+/* ==========================================================================
+   SEGUNDA OITAVA (OCTAVE-2 SPECIALIZATION)
+   ========================================================================== */
+
+.key.white.octave-2 { background: var(--octave2-grad); }
+
+.key.black.octave-2 {
+  background: linear-gradient(45deg, #333 0%, #1a1a1a 100%);
+  border-right: 1px solid var(--gold);
 }
 
-.piano-keys .key.hide span {
-  display: none;
+.key.octave-2 span {
+  color: var(--gold);
+  font-weight: bold;
 }
